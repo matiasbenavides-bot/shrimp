@@ -1,0 +1,9 @@
+allowBuilds:
+  sharp: true
+# Configuración de pnpm para este proyecto.
+# En pnpm 10+ estas settings ya NO se leen del campo "pnpm" de package.json.
+#
+# sharp (dependencia nativa de @capacitor/assets, que genera iconos y splash)
+# necesita ejecutar su script de instalación para bajar el binario prebuilt de
+# libvips. pnpm bloquea los scripts por política de cadena de suministro, así
+# que hay que autorizarlo explícitamente.

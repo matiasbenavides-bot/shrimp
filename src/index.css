@@ -1,0 +1,73 @@
+@import 'tailwindcss' source(none);
+
+/* `source(none)` desactiva la autodetección de fuentes: sin él Tailwind acaba
+   leyendo el bundle copiado en android/app/src/main/assets/public/assets/*.js
+   (416 KB de falsos candidatos), lo que mete clases basura en el CSS y hace que
+   su hash cambie según el momento en que compiles. Declaramos las fuentes reales. */
+@source '../index.html';
+@source './**/*.{ts,tsx}';
+
+/* modo oscuro por clase en <html>, no por preferencia del sistema:
+   la app deja elegir claro / oscuro / automático */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --animate-pop: pop 0.3s ease-out;
+  --animate-slide-up: slide-up 0.22s ease-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); }
+  55% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(14px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  @apply bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+/* hueco para la barra de navegación del sistema Android */
+.safe-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+.safe-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
