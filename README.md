@@ -124,7 +124,7 @@ Dos causas independientes (ambas verificadas, no supuestas):
 
 ## Pendiente (siguiente iteración)
 
-- [ ] Icono y splash propios (dependencias ya listas: `pnpm run icons`)
+- [x] Icono y splash propios — camarón low-poly (`pnpm run logo`, `pnpm run icons`)
 - [ ] Notificaciones de recordatorio nativas (dep instalada, sin cablear)
 - [ ] Botón atrás de Android y barra de estado a juego
 - [ ] Backup a fichero real / compartir
