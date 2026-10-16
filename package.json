@@ -15,7 +15,8 @@
     "icons": "capacitor-assets generate --android",
     "setup:sharp": "bash scripts/setup-sharp.sh",
     "logo": "python3 scripts/generate-logo.py && bash scripts/render-logo.sh",
-    "apk": "vite build && cap sync android && cd android && ./gradlew assembleDebug"
+    "apk": "vite build && cap sync android && cd android && ./gradlew assembleDebug",
+    "apk:release": "pnpm build && cap sync android && cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",

@@ -18,6 +18,12 @@ android/.gradle
 android/local.properties
 android/app/src/main/assets/public
 
+# Firma de release: JAMÁS al repo. El keystore y su password viven fuera del
+# proyecto (/root/keystores) y keystore.properties solo los referencia.
+android/keystore.properties
+*.jks
+*.keystore
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

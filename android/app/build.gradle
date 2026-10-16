@@ -1,5 +1,19 @@
 apply plugin: 'com.android.application'
 
+// --- Firma de release -------------------------------------------------------
+// Las credenciales viven en android/keystore.properties, que NO está en git
+// (ver .gitignore). El keystore en sí está fuera del proyecto, en /root/keystores:
+// así un clone público del repo no lleva ni el secreto ni la identidad de firma.
+// Si el fichero no existe, el release se genera SIN firmar y se avisa por consola.
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def hasReleaseSigning = keystorePropertiesFile.exists()
+if (hasReleaseSigning) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+} else {
+    logger.lifecycle("keystore.properties no encontrado: 'assembleRelease' generará un APK sin firmar.")
+}
+
 android {
     namespace = "com.shrimp.habitos"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -16,10 +30,28 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (hasReleaseSigning) {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                // v1 (JAR) desactivado: solo se instala en Android 7+ y este APK
+                // pide minSdk 24, así que v2/v3 son suficientes y más eficientes.
+                enableV1Signing = false
+                enableV2Signing = true
+                enableV3Signing = true
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
