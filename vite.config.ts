@@ -8,6 +8,16 @@ export default defineConfig({
   // encuentre los assets desde file:// / https://localhost
   base: './',
   plugins: [react(), tailwindcss()],
+  server: {
+    // `android/` y `dist/` NO son código fuente. Gradle y `cap sync` escriben
+    // miles de ficheros ahí, y el watcher recargaba la página y reoptimizaba
+    // las dependencias a media carga: la app se quedaba en blanco o daba
+    // "504 Outdated Optimize Dep". Pasó de verdad (page reload de
+    // android/build/reports/problems-report.html mientras se cargaba).
+    watch: {
+      ignored: ['**/android/**', '**/dist/**'],
+    },
+  },
   build: {
     outDir: 'dist',
     target: 'es2022',
